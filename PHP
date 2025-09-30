@@ -1,0 +1,80 @@
+<?php
+
+class DwarkaInfoSystem {
+    private $city_facts;
+    private $points_of_interest;
+
+    public function __construct() {
+        $this->city_facts = [
+            "Location" => "Gujarat, India (on the Arabian Sea coast)",
+            "Population" => "Approx. 40,000 (town area)",
+            "Known For" => "Dwarkadhish Temple (a Char Dham site) and being the ancient kingdom of Lord Krishna"
+        ];
+        
+        $this->points_of_interest = [
+            [
+                "name" => "Dwarkadhish Temple",
+                "type" => "Religious Site",
+                "description" => "A magnificent temple dedicated to Lord Krishna, the most famous site in Dwarka."
+            ],
+            [
+                "name" => "Rukmini Devi Temple",
+                "type" => "Temple",
+                "description" => "A small, beautiful temple dedicated to Krishna's chief queen, Rukmini."
+            ],
+            [
+                "name" => "Dwarka Beach",
+                "type" => "Coastal Area",
+                "description" => "A public beach where visitors often view the sunset."
+            ],
+            [
+                "name" => "Bet Dwarka",
+                "type" => "Island/Pilgrimage Site",
+                "description" => "An island believed to be the residence of Lord Krishna, accessible by ferry."
+            ]
+        ];
+    }
+
+    public function getCityFact($fact_name) {
+        if (isset($this->city_facts[$fact_name])) {
+            return "<strong>" . htmlspecialchars($fact_name) . "</strong>: " . htmlspecialchars($this->city_facts[$fact_name]);
+        } else {
+            return "Fact not found: " . htmlspecialchars($fact_name);
+        }
+    }
+
+    public function searchPointsOfInterest($search_term) {
+        $found_pois = [];
+        $lower_search_term = strtolower($search_term);
+
+        foreach ($this->points_of_interest as $poi) {
+            // Search by name or type
+            if (strpos(strtolower($poi["name"]), $lower_search_term) !== false || strpos(strtolower($poi["type"]), $lower_search_term) !== false) {
+                $found_pois[] = $poi;
+            }
+        }
+        return $found_pois;
+    }
+}
+
+// Example usage
+$info_system = new DwarkaInfoSystem();
+
+echo "<h2>Dwarka City Facts</h2>";
+echo "<p>" . $info_system->getCityFact("Location") . "</p>";
+echo "<p>" . $info_system->getCityFact("Known For") . "</p>";
+
+echo "<h2>Searching for 'Temple'</h2>";
+$temple_results = $info_system->searchPointsOfInterest("Temple");
+if (!empty($temple_results)) {
+    foreach ($temple_results as $result) {
+        echo "<p><strong>Name</strong>: " . htmlspecialchars($result["name"]) . "</p>";
+        echo "<p><strong>Type</strong>: " . htmlspecialchars($result["type"]) . "</p>";
+        echo "<p><strong>Description</strong>: " . htmlspecialchars($result["description"]) . "</p>";
+        echo "<hr>";
+    }
+} else {
+    echo "<p>No matching points of interest found.</p>";
+}
+
+?>
