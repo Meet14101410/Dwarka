@@ -1,0 +1,69 @@
+class DwarkaInfoSystem {
+    constructor() {
+        this.cityFacts = {
+            "Location": "Gujarat, India (on the Arabian Sea coast)",
+            "Population": "Approx. 40,000 (town area)",
+            "Known For": "Dwarkadhish Temple (a Char Dham site) and being the ancient kingdom of Lord Krishna"
+        };
+        
+        this.pointsOfInterest = [
+            {
+                name: "Dwarkadhish Temple",
+                type: "Religious Site",
+                description: "A magnificent temple dedicated to Lord Krishna, the most famous site in Dwarka."
+            },
+            {
+                name: "Rukmini Devi Temple",
+                type: "Temple",
+                description: "A small, beautiful temple dedicated to Krishna's chief queen, Rukmini."
+            },
+            {
+                name: "Dwarka Beach",
+                type: "Coastal Area",
+                description: "A public beach where visitors often view the sunset."
+            },
+            {
+                name: "Bet Dwarka",
+                type: "Island/Pilgrimage Site",
+                description: "An island believed to be the residence of Lord Krishna, accessible by ferry."
+            }
+        ];
+    }
+
+    getCityFact(factName) {
+        if (this.cityFacts.hasOwnProperty(factName)) {
+            return `${factName}: ${this.cityFacts[factName]}`;
+        } else {
+            return `Fact not found: ${factName}`;
+        }
+    }
+
+    searchPointsOfInterest(searchTerm) {
+        const lowerSearchTerm = searchTerm.toLowerCase();
+        // Use filter for concise search logic
+        return this.pointsOfInterest.filter(poi =>
+            poi.name.toLowerCase().includes(lowerSearchTerm) ||
+            poi.type.toLowerCase().includes(lowerSearchTerm)
+        );
+    }
+}
+
+// Example usage (run in browser console or Node.js)
+const infoSystem = new DwarkaInfoSystem();
+
+console.log("Dwarka City Facts");
+console.log(infoSystem.getCityFact("Location"));
+console.log(infoSystem.getCityFact("Known For"));
+
+console.log("\nSearching for 'Island'");
+const islandResults = infoSystem.searchPointsOfInterest("Island");
+if (islandResults.length > 0) {
+    islandResults.forEach(result => {
+        console.log(`Name: ${result.name}`);
+        console.log(`Type: ${result.type}`);
+        console.log(`Description: ${result.description}`);
+        console.log("------------------------");
+    });
+} else {
+    console.log("No matching points of interest found.");
+}
